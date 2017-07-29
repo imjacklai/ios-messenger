@@ -181,14 +181,14 @@ extension SignInController: GIDSignInDelegate {
                 return
             }
             
-            guard let uid = user?.uid, let name = googleUser.profile.name, let email = googleUser.profile.email else {
+            guard let uid = user?.uid, let name = googleUser.profile.name, let email = googleUser.profile.email, let profileImageUrl = googleUser.profile.imageURL(withDimension: 300) else {
                 self.indicator.stopAnimating()
                 SVProgressHUD.showError(withStatus: "登入失敗")
                 print("Failed to get uid or name or email")
                 return
             }
             
-            let values = ["name": name, "email": email]
+            let values = ["name": name, "email": email, "profileImageUrl": profileImageUrl.absoluteString]
             self.writeUserToDatebase(uid: uid, values: values)
         })
     }
