@@ -8,6 +8,7 @@ target 'Messenger' do
   # Pods for Messenger
   pod 'SnapKit'
   pod 'Kingfisher'
+  pod 'SVProgressHUD'
   pod 'UIColor_Hex_Swift'
   pod 'Firebase/Auth'
   pod 'Firebase/Database'

@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import SVProgressHUD
 
 class MessageListController: UIViewController {
     
@@ -15,15 +16,42 @@ class MessageListController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         navigationItem.title = "Messenger"
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "登出", style: .plain, target: self, action: #selector(signOut))
         checkUserSignIn()
     }
     
-    private func checkUserSignIn() {
+    fileprivate func checkUserSignIn() {
         guard let uid = Auth.auth().currentUser?.uid else {
-            present(SignInController(), animated: true, completion: nil)
+            self.presentSignInController()
             return
         }
         
+        print(uid)
+    }
+    
+    fileprivate func presentSignInController() {
+        let signInController = SignInController()
+        signInController.delegate = self
+        present(signInController, animated: true, completion: nil)
+    }
+    
+    @objc fileprivate func signOut() {
+        do {
+            try Auth.auth().signOut()
+        } catch {
+            SVProgressHUD.showError(withStatus: "登出失敗")
+            print("Failed to sign out: ", error)
+            return
+        }
+        
+        presentSignInController()
+    }
+
+}
+
+extension MessageListController: SignInControllerDelegate {
+    
+    func alreadySignIn(uid: String) {
         print(uid)
     }
     

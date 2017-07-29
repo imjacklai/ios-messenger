@@ -8,6 +8,7 @@
 
 import UIKit
 import SnapKit
+import SVProgressHUD
 
 protocol SignInRegisterViewDelegate {
     func signIn(email: String, password: String)
@@ -131,7 +132,7 @@ class SignInRegisterView: UIView {
         if segmentedControl.selectedSegmentIndex == 0 {
             guard let email = emailTextField.text, !email.isEmpty,
                 let password = passwordTextField.text, !password.isEmpty else {
-                print("請輸入完整")
+                SVProgressHUD.showError(withStatus: "請輸入完整")
                 return
             }
             delegate?.signIn(email: email, password: password)
@@ -139,7 +140,7 @@ class SignInRegisterView: UIView {
             guard let name = nameTextField.text, !name.isEmpty,
                 let email = emailTextField.text, !email.isEmpty,
                 let password = passwordTextField.text, !password.isEmpty else {
-                print("請輸入完整")
+                SVProgressHUD.showError(withStatus: "請輸入完整")
                 return
             }
             delegate?.register(name: name, email: email, password: password)

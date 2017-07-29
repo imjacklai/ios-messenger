@@ -65,6 +65,7 @@ PODS:
   - Kingfisher (3.10.3)
   - Protobuf (3.3.0)
   - SnapKit (3.2.0)
+  - SVProgressHUD (2.1.2)
   - UIColor_Hex_Swift (3.0.2)
 
 DEPENDENCIES:
@@ -75,6 +76,7 @@ DEPENDENCIES:
   - GoogleSignIn
   - Kingfisher
   - SnapKit
+  - SVProgressHUD
   - UIColor_Hex_Swift
 
 SPEC CHECKSUMS:
@@ -93,8 +95,9 @@ SPEC CHECKSUMS:
   Kingfisher: a0ac82dc5bcf0388dd74b294cf2cc13730c63436
   Protobuf: d582fecf68201eac3d79ed61369ef45734394b9c
   SnapKit: 1ca44df72cfa543218d177cb8aab029d10d86ea7
+  SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   UIColor_Hex_Swift: 95f718452092a3efc8a827dffd2c04d3237be02d
 
-PODFILE CHECKSUM: c96613036fc9a31ce46876473fa8ca55ed1f70f4
+PODFILE CHECKSUM: 45a8cb43d6078db959cc10390c79ffbf65bd37cb
 
 COCOAPODS: 1.2.1
