@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import GoogleSignIn
 import SVProgressHUD
 
 class MessageListController: UIViewController {
@@ -16,7 +17,7 @@ class MessageListController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         navigationItem.title = "Messenger"
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "登出", style: .plain, target: self, action: #selector(signOut))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "登出", style: .plain, target: self, action: #selector(confirmSignOut))
         checkUserSignIn()
     }
     
@@ -35,7 +36,7 @@ class MessageListController: UIViewController {
         present(signInController, animated: true, completion: nil)
     }
     
-    @objc fileprivate func signOut() {
+    fileprivate func signOut() {
         do {
             try Auth.auth().signOut()
         } catch {
@@ -45,6 +46,18 @@ class MessageListController: UIViewController {
         }
         
         presentSignInController()
+    }
+    
+    @objc fileprivate func confirmSignOut() {
+        let alertController = UIAlertController(title: "確定要登出？", message: "", preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "取消", style: .cancel, handler: nil)
+        let confirmAction = UIAlertAction(title: "登出", style: .default) { (action) in
+            self.signOut()
+            GIDSignIn.sharedInstance().signOut()
+        }
+        alertController.addAction(cancelAction)
+        alertController.addAction(confirmAction)
+        present(alertController, animated: true, completion: nil)
     }
 
 }

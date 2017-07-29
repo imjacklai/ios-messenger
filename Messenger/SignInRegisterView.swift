@@ -124,6 +124,7 @@ class SignInRegisterView: UIView {
         
         UIView.animate(withDuration: 0.3) { 
             self.layoutIfNeeded()
+            self.superview?.layoutIfNeeded()
         }
     }
     
