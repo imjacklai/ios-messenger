@@ -13,12 +13,19 @@ import SVProgressHUD
 
 class MessageListController: UIViewController {
     
+    fileprivate let profileImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
+    
     fileprivate var user: User?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         navigationItem.title = "Chat"
+        
+        profileImageView.layer.cornerRadius = 12
+        profileImageView.layer.masksToBounds = true
+        profileImageView.isUserInteractionEnabled = true
+        profileImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.presentProfileController)))
         
         guard let uid = Auth.auth().currentUser?.uid else {
             // User not sign in.
@@ -30,19 +37,12 @@ class MessageListController: UIViewController {
     }
     
     fileprivate func fetchUser(uid: String) {
-        Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
+        Database.database().reference().child("users").child(uid).observe(.value, with: { (snapshot) in
             guard let dictionary = snapshot.value as? [String: String] else { return }
             let user = User(uid: uid, dictionary: dictionary)
             self.user = user
-            
-            let profileImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
-            profileImageView.kf.setImage(with: user.profileImageUrl, placeholder: #imageLiteral(resourceName: "profile"))
-            profileImageView.layer.cornerRadius = 12
-            profileImageView.layer.masksToBounds = true
-            profileImageView.isUserInteractionEnabled = true
-            profileImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.presentProfileController)))
-            
-            self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: profileImageView)
+            self.profileImageView.kf.setImage(with: user.profileImageUrl, placeholder: #imageLiteral(resourceName: "profile"))
+            self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.profileImageView)
         })
     }
     
