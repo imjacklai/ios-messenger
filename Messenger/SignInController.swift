@@ -90,6 +90,20 @@ class SignInController: UIViewController {
         indicator.startAnimating()
     }
     
+    fileprivate func writeUserToDatebase(uid: String, values: [String:String]) {
+        Database.database().reference().child("users").child(uid).updateChildValues(values, withCompletionBlock: { (error, ref) in
+            if let error = error {
+                self.indicator.stopAnimating()
+                SVProgressHUD.showError(withStatus: "登入失敗")
+                print("Failed to write user to database: ", error)
+                return
+            }
+            
+            self.delegate?.alreadySignIn(uid: uid)
+            self.dismiss(animated: true, completion: nil)
+        })
+    }
+    
 }
 
 extension SignInController: SignInRegisterViewDelegate {
@@ -132,17 +146,7 @@ extension SignInController: SignInRegisterViewDelegate {
             }
             
             let values = ["name": name, "email": email]
-            
-            Database.database().reference().child("users").child(uid).updateChildValues(values, withCompletionBlock: { (error, ref) in
-                if let error = error {
-                    self.indicator.stopAnimating()
-                    print("Failed to write user to database: ", error)
-                    return
-                }
-                
-                self.delegate?.alreadySignIn(uid: uid)
-                self.dismiss(animated: true, completion: nil)
-            })
+            self.writeUserToDatebase(uid: uid, values: values)
         }
     }
     
@@ -154,7 +158,7 @@ extension SignInController: GIDSignInDelegate {
         if let error = error {
             self.indicator.stopAnimating()
             if error.localizedDescription != "The user canceled the sign-in flow." {
-                SVProgressHUD.showError(withStatus: "使用Google登入失敗")
+                SVProgressHUD.showError(withStatus: "登入失敗")
                 print("Failed to sign in via Google: ", error)
             }
             return
@@ -162,7 +166,7 @@ extension SignInController: GIDSignInDelegate {
         
         guard let authentication = googleUser.authentication else {
             self.indicator.stopAnimating()
-            SVProgressHUD.showError(withStatus: "使用Google登入失敗")
+            SVProgressHUD.showError(withStatus: "登入失敗")
             print("Failed to authenticate via Google")
             return
         }
@@ -172,31 +176,20 @@ extension SignInController: GIDSignInDelegate {
         Auth.auth().signIn(with: credential, completion: { (user, error) in
             if let error = error {
                 self.indicator.stopAnimating()
-                SVProgressHUD.showError(withStatus: "使用Google登入失敗")
+                SVProgressHUD.showError(withStatus: "登入失敗")
                 print("Credential error: ", error)
                 return
             }
             
             guard let uid = user?.uid, let name = googleUser.profile.name, let email = googleUser.profile.email else {
                 self.indicator.stopAnimating()
-                SVProgressHUD.showError(withStatus: "使用Google登入失敗")
+                SVProgressHUD.showError(withStatus: "登入失敗")
                 print("Failed to get uid or name or email")
                 return
             }
             
             let values = ["name": name, "email": email]
-            
-            Database.database().reference().child("users").child(uid).updateChildValues(values, withCompletionBlock: { (error, ref) in
-                if let error = error {
-                    self.indicator.stopAnimating()
-                    SVProgressHUD.showError(withStatus: "使用Google登入失敗")
-                    print("Failed to write user to database: ", error)
-                    return
-                }
-                
-                self.delegate?.alreadySignIn(uid: uid)
-                self.dismiss(animated: true, completion: nil)
-            })
+            self.writeUserToDatebase(uid: uid, values: values)
         })
     }
     
