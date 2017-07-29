@@ -8,26 +8,42 @@
 
 import UIKit
 import Firebase
-import GoogleSignIn
+import Kingfisher
 import SVProgressHUD
 
 class MessageListController: UIViewController {
     
+    fileprivate var user: User?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        navigationItem.title = "Messenger"
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "登出", style: .plain, target: self, action: #selector(confirmSignOut))
-        checkUserSignIn()
-    }
-    
-    fileprivate func checkUserSignIn() {
+        navigationItem.title = "Chat"
+        
         guard let uid = Auth.auth().currentUser?.uid else {
+            // User not sign in.
             self.presentSignInController()
             return
         }
         
-        print(uid)
+        fetchUser(uid: uid)
+    }
+    
+    fileprivate func fetchUser(uid: String) {
+        Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let dictionary = snapshot.value as? [String: String] else { return }
+            let user = User(uid: uid, dictionary: dictionary)
+            self.user = user
+            
+            let profileImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
+            profileImageView.kf.setImage(with: user.profileImageUrl, placeholder: #imageLiteral(resourceName: "profile"))
+            profileImageView.layer.cornerRadius = 12
+            profileImageView.layer.masksToBounds = true
+            profileImageView.isUserInteractionEnabled = true
+            profileImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.presentProfileController)))
+            
+            self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: profileImageView)
+        })
     }
     
     fileprivate func presentSignInController() {
@@ -36,28 +52,11 @@ class MessageListController: UIViewController {
         present(signInController, animated: true, completion: nil)
     }
     
-    fileprivate func signOut() {
-        do {
-            try Auth.auth().signOut()
-        } catch {
-            SVProgressHUD.showError(withStatus: "登出失敗")
-            print("Failed to sign out: ", error)
-            return
-        }
-        
-        presentSignInController()
-    }
-    
-    @objc fileprivate func confirmSignOut() {
-        let alertController = UIAlertController(title: "確定要登出？", message: "", preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: "取消", style: .cancel, handler: nil)
-        let confirmAction = UIAlertAction(title: "登出", style: .default) { (action) in
-            self.signOut()
-            GIDSignIn.sharedInstance().signOut()
-        }
-        alertController.addAction(cancelAction)
-        alertController.addAction(confirmAction)
-        present(alertController, animated: true, completion: nil)
+    @objc fileprivate func presentProfileController() {
+        let profileController = ProfileController()
+        profileController.delegate = self
+        profileController.user = self.user
+        navigationController?.pushViewController(profileController, animated: true)
     }
 
 }
@@ -65,7 +64,15 @@ class MessageListController: UIViewController {
 extension MessageListController: SignInControllerDelegate {
     
     func alreadySignIn(uid: String) {
-        print(uid)
+        fetchUser(uid: uid)
+    }
+    
+}
+
+extension MessageListController: ProfileControllerDelegate {
+    
+    func alreadySignOut() {
+        presentSignInController()
     }
     
 }

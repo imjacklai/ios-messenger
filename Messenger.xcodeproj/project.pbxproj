@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		291ADD27535E2CE15EC8B84D /* Pods_MessengerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E32F43010B1E1D5C74ECD289 /* Pods_MessengerUITests.framework */; };
 		48DF070837DC8965955706F2 /* Pods_Messenger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31914DAB91D105E2F49404F2 /* Pods_Messenger.framework */; };
+		B64EEB0A1F2C96FA009AB1B4 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64EEB091F2C96FA009AB1B4 /* User.swift */; };
+		B64EEB0C1F2CB0FD009AB1B4 /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64EEB0B1F2CB0FD009AB1B4 /* ProfileController.swift */; };
 		B670CFE51F2C5BB2000B9ED8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B670CFE41F2C5BB2000B9ED8 /* AppDelegate.swift */; };
 		B670CFEC1F2C5BB2000B9ED8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B670CFEB1F2C5BB2000B9ED8 /* Assets.xcassets */; };
 		B670CFEF1F2C5BB2000B9ED8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B670CFED1F2C5BB2000B9ED8 /* LaunchScreen.storyboard */; };
@@ -45,6 +47,8 @@
 		35256FA584B8D7AE8336F095 /* Pods-MessengerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MessengerUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MessengerUITests/Pods-MessengerUITests.release.xcconfig"; sourceTree = "<group>"; };
 		76A02F7105C59974C23445CB /* Pods-MessengerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MessengerTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MessengerTests/Pods-MessengerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		8AF39B5415D00D0090184539 /* Pods-MessengerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MessengerTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MessengerTests/Pods-MessengerTests.release.xcconfig"; sourceTree = "<group>"; };
+		B64EEB091F2C96FA009AB1B4 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		B64EEB0B1F2CB0FD009AB1B4 /* ProfileController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
 		B670CFE11F2C5BB2000B9ED8 /* Messenger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Messenger.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B670CFE41F2C5BB2000B9ED8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B670CFEB1F2C5BB2000B9ED8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -187,6 +191,7 @@
 			children = (
 				B670D0121F2C5DD9000B9ED8 /* MessageListController.swift */,
 				B670D0161F2C60D2000B9ED8 /* SignInController.swift */,
+				B64EEB0B1F2CB0FD009AB1B4 /* ProfileController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -194,6 +199,7 @@
 		B670D01A1F2C615A000B9ED8 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				B64EEB091F2C96FA009AB1B4 /* User.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -482,8 +488,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B64EEB0C1F2CB0FD009AB1B4 /* ProfileController.swift in Sources */,
 				B670D0171F2C60D2000B9ED8 /* SignInController.swift in Sources */,
 				B670CFE51F2C5BB2000B9ED8 /* AppDelegate.swift in Sources */,
+				B64EEB0A1F2C96FA009AB1B4 /* User.swift in Sources */,
 				B670D0131F2C5DD9000B9ED8 /* MessageListController.swift in Sources */,
 				B670D01C1F2C619B000B9ED8 /* SignInRegisterView.swift in Sources */,
 				B670D01E1F2C621A000B9ED8 /* CustomTextField.swift in Sources */,
