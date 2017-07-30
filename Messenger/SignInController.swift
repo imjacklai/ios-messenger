@@ -188,8 +188,15 @@ extension SignInController: GIDSignInDelegate {
                 return
             }
             
-            let values = ["name": name, "email": email, "profileImageUrl": profileImageUrl.absoluteString]
-            self.writeUserToDatebase(uid: uid, values: values)
+            Database.database().reference().child("users").observeSingleEvent(of: .value, with: { (snapshot) in
+                if snapshot.hasChild(uid) {
+                    let values = ["name": name, "email": email]
+                    self.writeUserToDatebase(uid: uid, values: values)
+                } else {
+                    let values = ["name": name, "email": email, "profileImageUrl": profileImageUrl.absoluteString]
+                    self.writeUserToDatebase(uid: uid, values: values)
+                }
+            })
         })
     }
     
