@@ -8,11 +8,10 @@
 
 import UIKit
 import Firebase
-import GoogleSignIn
 import SVProgressHUD
 
 protocol ProfileControllerDelegate {
-    func alreadySignOut()
+    func performSignOut()
 }
 
 class ProfileController: UIViewController {
@@ -114,19 +113,6 @@ class ProfileController: UIViewController {
         }
     }
     
-    fileprivate func signOut() {
-        do {
-            try Auth.auth().signOut()
-        } catch {
-            SVProgressHUD.showError(withStatus: "登出失敗")
-            print("Failed to sign out: ", error)
-            return
-        }
-        
-        navigationController?.popViewController(animated: true)
-        delegate?.alreadySignOut()
-    }
-    
     @objc fileprivate func chooseImageSource() {
         let alertController = UIAlertController(title: "選擇照片來源", message: nil, preferredStyle: .actionSheet)
         let cameraAction = UIAlertAction(title: "相機", style: .default) { (action) in
@@ -146,8 +132,7 @@ class ProfileController: UIViewController {
         let alertController = UIAlertController(title: "確定要登出？", message: "", preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: "取消", style: .cancel, handler: nil)
         let confirmAction = UIAlertAction(title: "登出", style: .default) { (action) in
-            self.signOut()
-            GIDSignIn.sharedInstance().signOut()
+            self.delegate?.performSignOut()
         }
         alertController.addAction(cancelAction)
         alertController.addAction(confirmAction)

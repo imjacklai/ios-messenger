@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import Kingfisher
+import GoogleSignIn
 import SVProgressHUD
 
 class MessageListController: UIViewController {
@@ -29,8 +30,14 @@ class MessageListController: UIViewController {
         
         guard let uid = Auth.auth().currentUser?.uid else {
             // User not sign in.
+            UserDefaults.standard.set(true, forKey: "not_first_run")
             self.presentSignInController()
             return
+        }
+        
+        if !UserDefaults.standard.bool(forKey: "not_first_run") {
+            UserDefaults.standard.set(true, forKey: "not_first_run")
+            signOut()
         }
         
         fetchUser(uid: uid)
@@ -44,6 +51,20 @@ class MessageListController: UIViewController {
             self.profileImageView.kf.setImage(with: user.profileImageUrl, placeholder: #imageLiteral(resourceName: "profile"))
             self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.profileImageView)
         })
+    }
+    
+    fileprivate func signOut() {
+        do {
+            try Auth.auth().signOut()
+            GIDSignIn.sharedInstance().signOut()
+        } catch {
+            SVProgressHUD.showError(withStatus: "登出失敗")
+            print("Failed to sign out: ", error)
+            return
+        }
+        
+        navigationController?.popViewController(animated: true)
+        presentSignInController()
     }
     
     fileprivate func presentSignInController() {
@@ -71,8 +92,8 @@ extension MessageListController: SignInControllerDelegate {
 
 extension MessageListController: ProfileControllerDelegate {
     
-    func alreadySignOut() {
-        presentSignInController()
+    func performSignOut() {
+        signOut()
     }
     
 }
