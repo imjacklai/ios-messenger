@@ -22,6 +22,7 @@ class MessageListController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         navigationItem.title = "Chat"
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(createNewMessage))
         
         profileImageView.layer.cornerRadius = 12
         profileImageView.layer.masksToBounds = true
@@ -78,6 +79,10 @@ class MessageListController: UIViewController {
         profileController.delegate = self
         profileController.user = self.user
         navigationController?.pushViewController(profileController, animated: true)
+    }
+    
+    @objc fileprivate func createNewMessage() {
+        present(UINavigationController(rootViewController: NewMessageController()), animated: true, completion: nil)
     }
 
 }
