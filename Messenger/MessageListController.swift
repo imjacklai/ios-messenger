@@ -82,7 +82,9 @@ class MessageListController: UIViewController {
     }
     
     @objc fileprivate func createNewMessage() {
-        present(UINavigationController(rootViewController: NewMessageController()), animated: true, completion: nil)
+        let newMessageController = NewMessageController()
+        newMessageController.delegate = self
+        present(UINavigationController(rootViewController: newMessageController), animated: true, completion: nil)
     }
 
 }
@@ -99,6 +101,16 @@ extension MessageListController: ProfileControllerDelegate {
     
     func performSignOut() {
         signOut()
+    }
+    
+}
+
+extension MessageListController: NewMessageControllerDelegate {
+    
+    func chatWith(user: User) {
+        let chatController = ChatController(collectionViewLayout: UICollectionViewFlowLayout())
+        chatController.user = user
+        navigationController?.pushViewController(chatController, animated: true)
     }
     
 }

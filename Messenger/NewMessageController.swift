@@ -9,10 +9,15 @@
 import UIKit
 import Firebase
 
+protocol NewMessageControllerDelegate {
+    func chatWith(user: User)
+}
+
 class NewMessageController: UITableViewController {
     
     fileprivate let indicator = UIActivityIndicatorView()
     var users = [User]()
+    var delegate: NewMessageControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,6 +47,13 @@ class NewMessageController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell", for: indexPath) as! UserCell
         cell.user = users[indexPath.row]
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        dismiss(animated: true) { 
+            let user = self.users[indexPath.row]
+            self.delegate?.chatWith(user: user)
+        }
     }
     
     @objc fileprivate func cancel() {
