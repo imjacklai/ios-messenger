@@ -65,4 +65,8 @@ class MessageInputView: UIView {
         delegate?.sendText(text: text)
     }
     
+    func clearTextField() {
+        inputTextField.text = ""
+    }
+    
 }
