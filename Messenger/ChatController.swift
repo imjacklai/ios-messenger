@@ -13,17 +13,15 @@ import SVProgressHUD
 class ChatController: UICollectionViewController {
     
     var user: User? {
-        didSet { navigationItem.title = user?.name }
+        didSet {
+            navigationItem.title = user?.name
+            fetchMessages()
+        }
     }
+    
+    var messages = [Message]()
     
     fileprivate let messageInputView = MessageInputView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        collectionView?.backgroundColor = .white
-        
-        messageInputView.delegate = self
-    }
     
     override var inputAccessoryView: UIView? {
         return messageInputView
@@ -31,6 +29,52 @@ class ChatController: UICollectionViewController {
     
     override var canBecomeFirstResponder: Bool {
         return true
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: Notification.Name.UIKeyboardWillShow, object: nil)
+        
+        collectionView?.backgroundColor = .white
+        collectionView?.contentInset = UIEdgeInsetsMake(10, 0, 10, 0)
+        collectionView?.alwaysBounceVertical = true
+        collectionView?.keyboardDismissMode = .interactive
+        collectionView?.register(MessageCell.self, forCellWithReuseIdentifier: "MessageCell")
+        
+        messageInputView.delegate = self
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        collectionView?.collectionViewLayout.invalidateLayout()
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return messages.count
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MessageCell", for: indexPath) as! MessageCell
+        guard let partner = user else { return cell }
+        cell.setupMessage(partner: partner, message: messages[indexPath.row])
+        return cell
+    }
+    
+    fileprivate func fetchMessages() {
+        guard let fromId = Auth.auth().currentUser?.uid, let toId = user?.uid else { return }
+        
+        Database.database().reference().child("user-message").child(fromId).child(toId).observe(.childAdded, with: { (snapshot) in
+            let messageId = snapshot.key
+            Database.database().reference().child("messages").child(messageId).observeSingleEvent(of: .value, with: { (snapshot) in
+                guard let dictionary = snapshot.value as? [String: Any] else { return }
+                self.messages.append(Message(dictionary: dictionary))
+                DispatchQueue.main.async {
+                    self.collectionView?.reloadData()
+                    let indexPath = IndexPath(row: self.messages.count - 1, section: 0)
+                    self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+                }
+            })
+        })
     }
     
     fileprivate func sendMessage(properties: [String: Any]) {
@@ -56,6 +100,29 @@ class ChatController: UICollectionViewController {
             
             self.messageInputView.clearTextField()
         }
+    }
+    
+    @objc fileprivate func keyboardWillShow() {
+        guard messages.count > 0 else { return }
+        let indexPath = IndexPath(row: messages.count - 1, section: 0)
+        DispatchQueue.main.async {
+            self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+        }
+    }
+    
+}
+
+extension ChatController: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        var height: CGFloat = 80
+        let message = messages[indexPath.row]
+        
+        if let text = message.text {
+            height = text.estimateFrame(withConstrainedWidth: 200, fontSize: 16).height + 20
+        }
+        
+        return CGSize(width: UIScreen.main.bounds.width, height: height)
     }
     
 }

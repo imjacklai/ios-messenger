@@ -25,6 +25,9 @@
 		B6D03DEE1F2F75650024294B /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D03DED1F2F75650024294B /* UserCell.swift */; };
 		B6D03DF01F2F7C380024294B /* ChatController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D03DEF1F2F7C380024294B /* ChatController.swift */; };
 		B6D03DF21F2FF3DA0024294B /* MessageInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D03DF11F2FF3DA0024294B /* MessageInputView.swift */; };
+		B6D03DF41F3296730024294B /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D03DF31F3296730024294B /* Message.swift */; };
+		B6D03DF61F3297650024294B /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D03DF51F3297650024294B /* MessageCell.swift */; };
+		B6D03DF81F329B1A0024294B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D03DF71F329B1A0024294B /* Extensions.swift */; };
 		B9BB843F41F8F831167C698C /* Pods_MessengerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF75F982DD5729C5CE814502 /* Pods_MessengerTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -73,6 +76,9 @@
 		B6D03DED1F2F75650024294B /* UserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		B6D03DEF1F2F7C380024294B /* ChatController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatController.swift; sourceTree = "<group>"; };
 		B6D03DF11F2FF3DA0024294B /* MessageInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageInputView.swift; sourceTree = "<group>"; };
+		B6D03DF31F3296730024294B /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		B6D03DF51F3297650024294B /* MessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
+		B6D03DF71F329B1A0024294B /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		CF75F982DD5729C5CE814502 /* Pods_MessengerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MessengerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E32F43010B1E1D5C74ECD289 /* Pods_MessengerUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MessengerUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F23320673E956270EC7A4687 /* Pods-Messenger.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Messenger.release.xcconfig"; path = "Pods/Target Support Files/Pods-Messenger/Pods-Messenger.release.xcconfig"; sourceTree = "<group>"; };
@@ -159,6 +165,7 @@
 				B670D0181F2C614C000B9ED8 /* View */,
 				B670D0191F2C6154000B9ED8 /* Controller */,
 				B670CFE41F2C5BB2000B9ED8 /* AppDelegate.swift */,
+				B6D03DF71F329B1A0024294B /* Extensions.swift */,
 				B670CFEB1F2C5BB2000B9ED8 /* Assets.xcassets */,
 				B670CFED1F2C5BB2000B9ED8 /* LaunchScreen.storyboard */,
 				B670CFF01F2C5BB2000B9ED8 /* Info.plist */,
@@ -192,6 +199,7 @@
 				B670D01B1F2C619B000B9ED8 /* SignInRegisterView.swift */,
 				B6D03DF11F2FF3DA0024294B /* MessageInputView.swift */,
 				B6D03DED1F2F75650024294B /* UserCell.swift */,
+				B6D03DF51F3297650024294B /* MessageCell.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -212,6 +220,7 @@
 			isa = PBXGroup;
 			children = (
 				B64EEB091F2C96FA009AB1B4 /* User.swift */,
+				B6D03DF31F3296730024294B /* Message.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -504,13 +513,16 @@
 				B64EEB0C1F2CB0FD009AB1B4 /* ProfileController.swift in Sources */,
 				B670D0171F2C60D2000B9ED8 /* SignInController.swift in Sources */,
 				B6D03DF01F2F7C380024294B /* ChatController.swift in Sources */,
+				B6D03DF61F3297650024294B /* MessageCell.swift in Sources */,
 				B670CFE51F2C5BB2000B9ED8 /* AppDelegate.swift in Sources */,
 				B64EEB0A1F2C96FA009AB1B4 /* User.swift in Sources */,
 				B6D03DEE1F2F75650024294B /* UserCell.swift in Sources */,
 				B670D0131F2C5DD9000B9ED8 /* MessageListController.swift in Sources */,
 				B6D03DF21F2FF3DA0024294B /* MessageInputView.swift in Sources */,
+				B6D03DF41F3296730024294B /* Message.swift in Sources */,
 				B670D01C1F2C619B000B9ED8 /* SignInRegisterView.swift in Sources */,
 				B670D01E1F2C621A000B9ED8 /* CustomTextField.swift in Sources */,
+				B6D03DF81F329B1A0024294B /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
