@@ -10,10 +10,12 @@ import UIKit
 
 protocol MessageInputViewDelegate {
     func sendText(text: String)
+    func pickImage()
 }
 
 class MessageInputView: UIView {
     
+    fileprivate let uploadImageView = UIImageView()
     fileprivate let inputTextField = CustomTextField()
     fileprivate let sendButton = UIButton(type: .system)
     
@@ -21,6 +23,10 @@ class MessageInputView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        uploadImageView.image = #imageLiteral(resourceName: "picture")
+        uploadImageView.isUserInteractionEnabled = true
+        uploadImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(pickImage)))
         
         inputTextField.placeholder = "訊息..."
         inputTextField.layer.cornerRadius = 5
@@ -34,14 +40,21 @@ class MessageInputView: UIView {
         divider.backgroundColor = UIColor("#DCDCDC")
         
         self.backgroundColor = .white
+        self.addSubview(uploadImageView)
         self.addSubview(inputTextField)
         self.addSubview(sendButton)
         self.addSubview(divider)
         
+        uploadImageView.snp.makeConstraints { (make) in
+            make.width.height.equalTo(30)
+            make.left.equalTo(self).offset(10)
+            make.centerY.equalTo(self)
+        }
+        
         inputTextField.snp.makeConstraints { (make) in
             make.height.equalTo(30)
             make.centerY.equalTo(self)
-            make.left.equalTo(self).offset(10)
+            make.left.equalTo(uploadImageView.snp.right).offset(10)
             make.right.equalTo(sendButton.snp.left)
         }
         
@@ -58,6 +71,10 @@ class MessageInputView: UIView {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    @objc fileprivate func pickImage() {
+        delegate?.pickImage()
     }
     
     @objc fileprivate func sendText() {

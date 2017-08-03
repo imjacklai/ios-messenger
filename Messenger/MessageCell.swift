@@ -15,6 +15,7 @@ class MessageCell: UICollectionViewCell {
     fileprivate let profileImageView = UIImageView()
     fileprivate let bubbleView = UIView()
     fileprivate let textView = UITextView()
+    fileprivate let imageView = UIImageView()
     
     fileprivate var bubbleViewLeftConstraint: Constraint?
     fileprivate var bubbleViewRightConstraint: Constraint?
@@ -36,7 +37,12 @@ class MessageCell: UICollectionViewCell {
         textView.isScrollEnabled = false
         textView.dataDetectorTypes = .all
         
+        imageView.layer.cornerRadius = 16
+        imageView.layer.masksToBounds = true
+        imageView.contentMode = .scaleAspectFill
+        
         bubbleView.addSubview(textView)
+        bubbleView.addSubview(imageView)
         contentView.addSubview(profileImageView)
         contentView.addSubview(bubbleView)
         
@@ -55,6 +61,10 @@ class MessageCell: UICollectionViewCell {
         
         textView.snp.makeConstraints { (make) in
             make.edges.equalTo(bubbleView).inset(UIEdgeInsetsMake(0, 10, 0, 10))
+        }
+        
+        imageView.snp.makeConstraints { (make) in
+            make.edges.equalTo(bubbleView)
         }
     }
     
@@ -88,6 +98,20 @@ class MessageCell: UICollectionViewCell {
             bubbleView.snp.updateConstraints({ (make) in
                 make.width.equalTo(text.estimateFrame(withConstrainedWidth: 200, fontSize: 16).width + 32)
             })
+        } else {
+            textView.isHidden = true
+            bubbleView.snp.updateConstraints({ (make) in
+                make.width.equalTo(232)
+            })
+        }
+        
+        if let imageUrlString = message.imageUrl, let imageUrl = URL(string: imageUrlString) {
+            imageView.kf.indicatorType = .activity
+            imageView.kf.setImage(with: imageUrl)
+            imageView.isHidden = false
+            bubbleView.backgroundColor = .clear
+        } else {
+            imageView.isHidden = true
         }
     }
     

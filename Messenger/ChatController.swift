@@ -102,6 +102,23 @@ class ChatController: UICollectionViewController {
         }
     }
     
+    fileprivate func uploadImage(image: UIImage) {
+        guard let data = UIImageJPEGRepresentation(image, 0.5) else { return }
+        
+        let imageName = UUID().uuidString
+        
+        Storage.storage().reference().child("message_images").child(imageName).putData(data, metadata: nil, completion: { (metadata, error) in
+            if let error = error {
+                print("Failed to upload image: ", error)
+                return
+            }
+            
+            guard let imageUrl = metadata?.downloadURL()?.absoluteString else { return }
+            
+            self.sendMessage(properties: ["imageUrl": imageUrl, "imageWidth": image.size.width, "imageHeight": image.size.height])
+        })
+    }
+    
     @objc fileprivate func keyboardWillShow() {
         guard messages.count > 0 else { return }
         let indexPath = IndexPath(row: messages.count - 1, section: 0)
@@ -120,6 +137,8 @@ extension ChatController: UICollectionViewDelegateFlowLayout {
         
         if let text = message.text {
             height = text.estimateFrame(withConstrainedWidth: 200, fontSize: 16).height + 20
+        } else if let imageWidth = message.imageWidth, let imageHeight = message.imageHeight {
+            height = CGFloat(imageHeight / imageWidth * 232)
         }
         
         return CGSize(width: UIScreen.main.bounds.width, height: height)
@@ -129,8 +148,35 @@ extension ChatController: UICollectionViewDelegateFlowLayout {
 
 extension ChatController: MessageInputViewDelegate {
     
+    func pickImage() {
+        let pickerController = UIImagePickerController()
+        pickerController.delegate = self
+        pickerController.allowsEditing = true
+        present(pickerController, animated: true, completion: nil)
+    }
+    
     func sendText(text: String) {
         sendMessage(properties: ["text": text])
+    }
+    
+}
+
+extension ChatController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        var selectedImage: UIImage?
+        
+        if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
+            selectedImage = editedImage
+        } else if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage {
+            selectedImage = originalImage
+        }
+        
+        if let selectedImage = selectedImage {
+            uploadImage(image: selectedImage)
+        }
+        
+        dismiss(animated: true, completion: nil)
     }
     
 }
