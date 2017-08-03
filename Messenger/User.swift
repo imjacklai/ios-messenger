@@ -8,12 +8,14 @@
 
 import Foundation
 
-class User {
+class User: NSObject {
     
     var uid: String
     var name: String
     var email: String
     var profileImageUrl: URL?
+    var lastMessage: String?
+    var timestamp: Double?
     
     init(uid: String, dictionary: [String: String]) {
         self.uid = uid
@@ -23,6 +25,8 @@ class User {
         if let profileImage = dictionary["profileImageUrl"], let profileImageUrl = URL(string: profileImage) {
             self.profileImageUrl = profileImageUrl
         }
+        
+        super.init()
     }
     
 }
