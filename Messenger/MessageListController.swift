@@ -35,6 +35,7 @@ class MessageListController: UITableViewController {
         indicator.hidesWhenStopped = true
         
         tableView.register(UserCell.self, forCellReuseIdentifier: "UserCell")
+        tableView.allowsMultipleSelectionDuringEditing = true
         tableView.rowHeight = 72
         tableView.addSubview(indicator)
         
@@ -72,6 +73,29 @@ class MessageListController: UITableViewController {
         presentChatController(user: users[indexPath.row])
     }
     
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let user = users[indexPath.row]
+        let partnerId = user.uid
+        
+        Database.database().reference().child("user-message").child(uid).child(partnerId).removeValue { (error, ref) in
+            if let error = error {
+                print("Unable to remove from user-message: ", error)
+                return
+            }
+            
+            Database.database().reference().child("user-list").child(uid).child(partnerId).removeValue { (error, ref) in
+                if let error = error {
+                    print("Unable to remove from user-list: ", error)
+                    return
+                }
+                
+                self.users.filter { it -> Bool in it.uid == partnerId }.forEach{ it in self.users.remove(at: self.users.index(of: it)!) }
+                self.tableView.reloadData()
+            }
+        }
+    }
+    
     fileprivate func fetchSelf(uid: String) {
         Database.database().reference().child("users").child(uid).observe(.value, with: { (snapshot) in
             guard let dictionary = snapshot.value as? [String: String] else { return }
@@ -83,8 +107,8 @@ class MessageListController: UITableViewController {
     }
     
     fileprivate func fetchUserMessages(uid: String) {
-        indicator.startAnimating()
         Database.database().reference().child("user-list").child(uid).observe(.childAdded, with: { (snapshot) in
+            self.indicator.startAnimating()
             let partnerId = snapshot.key
             Database.database().reference().child("user-list").child(uid).child(partnerId).observe(.childAdded, with: { (snapshot) in
                 let messageId = snapshot.key
