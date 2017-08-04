@@ -107,6 +107,9 @@ class MessageListController: UITableViewController {
     }
     
     fileprivate func fetchUserMessages(uid: String) {
+        users.removeAll()
+        tableView.reloadData()
+        
         Database.database().reference().child("user-list").child(uid).observe(.childAdded, with: { (snapshot) in
             self.indicator.startAnimating()
             let partnerId = snapshot.key
@@ -194,6 +197,7 @@ extension MessageListController: SignInControllerDelegate {
     
     func alreadySignIn(uid: String) {
         fetchSelf(uid: uid)
+        fetchUserMessages(uid: uid)
     }
     
 }
