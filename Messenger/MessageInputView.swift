@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol MessageInputViewDelegate {
+protocol MessageInputViewDelegate: class {
     func sendText(text: String)
     func pickImage()
 }
@@ -19,7 +19,7 @@ class MessageInputView: UIView {
     fileprivate let inputTextField = CustomTextField()
     fileprivate let sendButton = UIButton(type: .system)
     
-    var delegate: MessageInputViewDelegate?
+    weak var delegate: MessageInputViewDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)

@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-protocol NewMessageControllerDelegate {
+protocol NewMessageControllerDelegate: class {
     func chatWith(user: User)
 }
 
@@ -17,7 +17,7 @@ class NewMessageController: UITableViewController {
     
     fileprivate let indicator = UIActivityIndicatorView()
     var users = [User]()
-    var delegate: NewMessageControllerDelegate?
+    weak var delegate: NewMessageControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()

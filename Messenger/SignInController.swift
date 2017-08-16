@@ -12,7 +12,7 @@ import GoogleSignIn
 import SVProgressHUD
 import UIColor_Hex_Swift
 
-protocol SignInControllerDelegate {
+protocol SignInControllerDelegate: class {
     func alreadySignIn(uid: String)
 }
 
@@ -23,7 +23,7 @@ class SignInController: UIViewController {
     let indicator = UIActivityIndicatorView()
     let googleSignIn = GIDSignIn.sharedInstance()
     
-    var delegate: SignInControllerDelegate?
+    weak var delegate: SignInControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import SVProgressHUD
 
-protocol SignInRegisterViewDelegate {
+protocol SignInRegisterViewDelegate: class {
     func signIn(email: String, password: String)
     func register(name: String, email: String, password: String)
 }
@@ -23,7 +23,7 @@ class SignInRegisterView: UIView {
     let passwordTextField = CustomTextField()
     let submitButton = UIButton(type: .system)
     
-    var delegate: SignInRegisterViewDelegate?
+    weak var delegate: SignInRegisterViewDelegate?
     
     init(color: UIColor) {
         super.init(frame: CGRect.zero)

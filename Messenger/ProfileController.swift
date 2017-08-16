@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 import SVProgressHUD
 
-protocol ProfileControllerDelegate {
+protocol ProfileControllerDelegate: class {
     func performSignOut()
 }
 
@@ -20,7 +20,7 @@ class ProfileController: UIViewController {
     fileprivate let emailLabel = UILabel()
     fileprivate let indicator = UIActivityIndicatorView()
     
-    var delegate: ProfileControllerDelegate?
+    weak var delegate: ProfileControllerDelegate?
     
     var user: User? {
         didSet { setupProfile() }
