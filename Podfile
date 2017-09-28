@@ -6,15 +6,15 @@ target 'Messenger' do
   use_frameworks!
 
   # Pods for Messenger
-  pod 'SnapKit'
-  pod 'Kingfisher'
-  pod 'SVProgressHUD'
-  pod 'UIColor_Hex_Swift'
-  pod 'Firebase/Auth'
-  pod 'Firebase/Database'
-  pod 'Firebase/Storage'
-  pod 'Firebase/Messaging'
-  pod 'GoogleSignIn'
+  pod 'SnapKit', '~> 4.0.0'
+  pod 'Kingfisher', '~> 4.1.0'
+  pod 'SVProgressHUD', '~> 2.2.1'
+  pod 'UIColor_Hex_Swift', :git => 'https://github.com/yeahdongcn/UIColor-Hex-Swift.git'
+  pod 'Firebase/Auth', '~> 4.2.0'
+  pod 'Firebase/Database', '~> 4.2.0'
+  pod 'Firebase/Storage', '~> 4.2.0'
+  pod 'Firebase/Messaging', '~> 4.2.0'
+  pod 'GoogleSignIn', '~> 4.1.0'
 
   target 'MessengerTests' do
     inherit! :search_paths

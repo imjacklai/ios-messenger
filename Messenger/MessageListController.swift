@@ -14,7 +14,7 @@ import SVProgressHUD
 
 class MessageListController: UITableViewController {
     
-    fileprivate let profileImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
+    fileprivate let profileImageView = UIImageView()
     fileprivate let indicator = UIActivityIndicatorView()
     
     fileprivate var user: User?
@@ -30,6 +30,9 @@ class MessageListController: UITableViewController {
         profileImageView.layer.masksToBounds = true
         profileImageView.isUserInteractionEnabled = true
         profileImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.presentProfileController)))
+        profileImageView.snp.makeConstraints { (make) in
+            make.width.height.equalTo(24)
+        }
         
         indicator.color = .gray
         indicator.hidesWhenStopped = true

@@ -12,7 +12,7 @@ extension String {
     
     func estimateFrame(withConstrainedWidth width: CGFloat, fontSize: CGFloat) -> CGRect {
         let constraintRect = CGSize(width: width, height: .greatestFiniteMagnitude)
-        return self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: fontSize)], context: nil)
+        return self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: fontSize)], context: nil)
     }
     
 }
